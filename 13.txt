@@ -1,0 +1,113 @@
+13a
+%option noyywrap
+%{
+#include<stdio.h>
+int keyword = 0,datatype =
+0,symbol = 0,identifier = 0,number =
+0,t = 0;
+%}
+%%
+"if"|"else"|"for"|"do"|"while"|"break"|
+"printf"|"return"|"continue"|"case"|"d
+efault"|"int"|"scanf"
+{keyword++;t++;}
+"("|")"|";"|","|"{"|"}"|"%"|"<"|">"|"!"|
+"&"|":"|"+"|"-"|"\""|"="|"$"|"@"
+
+{symbol++;t++;}
+[A-Za-z]+
+
+{identifier++;t++;}
+
+[0-9]+
+
+{number++;t++;}
+"\n" printf("\nKeywords =
+%d \nSymbol = %d \nIdentifier =
+%d \nNumbers = %d \nTokens =
+%d",keyword,symbol,identifier,
+number,t);
+%%
+int main()
+{
+printf("Enter a string ");
+yylex();
+return 0;
+}
+
+13b
+
+IC.l
+%{
+#include&quot;y.tab.h&quot;
+%}
+%%
+[a-zA-Z]+ {strcpy(yylval.str,yytext); return Var;}
+[0-9]+ {strcpy(yylval.str,yytext); return Num;}
+\n {return 0;}
+. {return yytext[0];}
+%%
+int yywrap()
+{
+return 1;
+}
+
+IC.y
+%{
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+char * createT();
+int tempcount=0;
+int top=-1;
+%}
+%union
+{
+char str[30];
+}
+%left &#39;+&#39;
+%left &#39;-&#39;
+%left &#39;*&#39;
+%left &#39;/&#39;
+%token &lt;str&gt; Var
+%token &lt;str&gt; Num
+%type &lt;str&gt; s
+%type &lt;str&gt; exp
+%%
+s: Var &#39;=&#39; exp {printf(&quot;\n%s=%s\n&quot;,$1,$3);}
+exp: &#39;(&#39; exp &#39;)&#39; {strcpy($$,$2);}
+| exp &#39;+&#39; exp {strcpy($$,createT());printf(&quot;\n%s=%s+%s&quot;,$$,$1,$3);}
+|exp &#39;-&#39; exp {strcpy($$,createT());printf(&quot;\n%s=%s-%s&quot;,$$,$1,$3);}
+| exp &#39;*&#39; exp {strcpy($$,createT());printf(&quot;\n%s=%s*%s&quot;,$$,$1,$3);}
+| exp &#39;/&#39; exp {strcpy($$,createT());printf(&quot;\n%s=%s/%s&quot;,$$,$1,$3);}
+| Num {strcpy($$,$1);}
+| Var {strcpy($$,$1);}
+
+%%
+
+char * createT()
+{
+char snum[30],*ptr;
+sprintf(snum,&quot;t%d&quot;,tempcount);
+ptr=snum;
+tempcount++;
+return ptr;
+}
+int main()
+{
+yyparse();
+return 0;
+}
+int yyerror(char *err)
+{
+printf(&quot;\nInvlaid&quot;);
+exit(0);
+}
+
+flex IC.l
+ls
+yacc -d IC.y
+ls
+cc lex.yy.c y.tab.c
+ls
+./a.out

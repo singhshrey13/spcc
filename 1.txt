@@ -1,0 +1,56 @@
+1a
+#include<stdio.h>
+#include<conio.h>
+#include"cals.h"
+void main()
+{
+	int a,b;
+	clrscr();
+	printf("Enter the value of a and b:");
+	scanf("%d%d",&a,&b);
+	printf("ADDITION:%d\n",add(a,b));
+	printf("SUBTRACTION:%d\n",sub(a,b));
+	printf("MULTIPLICATION:%d\n",mul(a,b));
+	printf("DIVISION:%d\n",div(a,b));
+	printf(“SQUARE:%d\n”,square(a));
+	printf(“CUBE:%d\n”,cube(a));
+	getch();
+}
+cals.h
+int r;
+int add(int a,int b)
+{     r=a+b;
+return(r);  }
+int sub(int a,int b)
+{    r=a-b;
+return(r);  }
+int mul(int a,int b)
+{    r=a*b;
+return(r);  }
+int div(int a,int b)
+{    r=a/b;
+return(r);  }
+int square(int a)
+{   r=a*a;
+return (r);   }
+int cube(int a)
+{  r=a*a*a;
+return (r);   }
+
+1b
+%option noyywrap
+%{
+#include<stdio.h>
+int vowels=0,cons=0;
+%}
+%%
+[aeiouAEIOU] {vowels++;}
+[^aeiouAEIOU\n] {cons++;}
+\n printf("Vowels: %d
+\nConsonants: %d",vowels,cons);
+%%
+int main()
+{
+yylex();
+return 0;
+}

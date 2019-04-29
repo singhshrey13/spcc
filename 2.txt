@@ -1,0 +1,94 @@
+2a
+convert.h
+#define ctof(c) ((c*1.8)+32)
+#define mtof(m) (m*3.281)
+#define ltocf(l) (l/28.31)
+#define ftoc(f) ((f-32)*5/9)
+#define ftom(f) (f/3.281)
+#define cftol(l) (l*28.31)
+ 
+.C
+#include<stdio.h>
+#include "convert.h"
+void main()
+{
+	float c,f,m,ft,lt,cft;
+	clrscr();
+	printf("\n enter temp in celsius : ");
+	scanf("%f",&c);
+	f = ctof(c);
+	printf("\n temp in farenehit is %f \n",f);
+	printf("\n enter temp in farenheit : ");
+	scanf("%f",&f);
+	c = ftoc(f);
+	printf("\n temp in celsius is %f \n",c);
+	printf("\n enter dist in meter : ");
+	scanf("%f",&m);
+	ft = mtof(m);
+	printf("\n distance in feet is %f \n",ft);
+	printf("\n enter dist in feet : ");
+	scanf("%f",&ft);
+	m = ftom(ft);
+	printf("\n distance in meter is %f \n",m);
+	printf("\n enter litre : ");
+	scanf("%f",&lt);
+	cft = ltocf(lt);
+	printf("\n cubic feet is %f \n",cft);
+	printf("\n enter cubicfeet : ");
+	scanf("%f",&cft);
+	lt = cftol(cft);
+	printf("\n litre is %f \n",lt);
+	getch();
+}
+
+2b
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class ThreeAc_bosco {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("enter expression: ");
+        convert(sc.next());
+    }
+    
+    static List<String> op = new ArrayList<>(Arrays.asList("(","^","*","/","+","-"));
+    static int t=0;
+    
+    public static String convert(String s){
+        List<String> tok = new ArrayList<>(Arrays.asList(s.split("")));
+        for(String o : op){
+            for(int i=0;i<tok.size();i++){
+                if(tok.get(i).equals(o)){
+                    if(tok.get(i).equals("(")){
+                        String s1="";
+                        int j=i+1;
+                        while(!tok.get(j).equals(")")){
+                            s1+=tok.get(j);
+                            j++;
+                        }
+                        String m=convert(s1);
+                        tok.set(i,m);
+                        while(j>i){
+                            tok.remove(j);
+                            j--;
+                        }
+                    }
+                    else{
+                        int prev=i-1;
+                        System.out.println("t"+t+" = "+tok.get(i-1)+" "+tok.get(i)+" "+tok.get(i+1));
+                        tok.set(i-1, "t"+t);
+                        t++;
+                        tok.remove(i+1);
+                        tok.remove(i);
+                        i=prev;
+                    }
+                }
+            }
+        }
+        return "t"+(t-1);
+    }
+}

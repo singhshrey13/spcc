@@ -1,0 +1,87 @@
+10a
+#include<stdio.h>
+#include<string.h>
+#define SIZE 10
+  int main () {
+       char non_terminal;
+       char beta[10],alpha[10];
+       int num,temp;
+       int i,k,j,z,l;
+       char production[10][SIZE];
+       int index=3;                 /* starting of the string following "->" */
+       clrscr();
+       printf("Enter Number of Production : ");
+       scanf("%d",&num);
+       printf("Enter the grammar as E->E-A :\n");
+       for(i=0;i<num;i++){
+	    scanf("%s",production[i]);
+       }
+       for(i=0;i<num;i++){
+	    printf("\nGRAMMAR : : : %s",production[i]);
+	    non_terminal=production[i][0];
+	    
+      if(non_terminal==production[i][index]) {
+	      index=index+1;
+	      for(k=0;production[i][index]!='|';k++){
+		 alpha[k]=production[i][index];
+		 index++;
+	      }
+printf(" is left recursive.\n");
+	while(production[i][index]!=0 && production[i][index]!='|')  {
+	   	index++;  }
+
+  	if(production[i][index]!=0) {
+		temp=0;
+   		index++;
+		for(z=index; production[i][index]!=0; z++){
+			 beta[temp]=production[i][index];
+		 	index++; 
+     			temp++;  }
+printf("Grammar without left recursion:\n");
+//printing A
+printf("%c->",non_terminal);//%c%c\'",non_terminal,beta,non_terminal);
+for(j=0;j<temp;j++){
+		printf("%c",beta[j]);
+		      }
+		      printf("%c\'",non_terminal);
+
+	//printing A'
+printf("\n%c\'->",non_terminal);//%s%c\'|^\n",non_terminal,alpha,non_terminal);
+for(j=0;j<k;j++){
+		printf("%c",alpha[j]);
+		      }
+printf("%c\'|^\n",non_terminal);
+       
+		}
+	else
+		printf(" can't be reduced\n");
+	   } 
+	   else 
+		 printf(" is not left recursive.\n");
+	    index=3;
+
+     for(l=0;l<10;l++){
+      beta[l]=0;
+      alpha[l]=0;     
+     }  
+    }   
+  getch();
+  }
+
+10b
+%option noyywrap
+%{
+#include<stdio.h>
+int vowels=0,cons=0;
+%}
+%%
+[aeiouAEIOU] {vowels++;}
+[^aeiouAEIOU\n] {cons++;}
+\n printf("Vowels: %d
+\nConsonants: %d",vowels,cons);
+%%
+int main()
+{
+yylex();
+return 0;
+}

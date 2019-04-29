@@ -1,0 +1,109 @@
+9a
+
+#include<stdio.h>
+#include<string.h>
+#define SIZE 10
+  int main () {
+       char non_terminal;
+       char beta[10],alpha[10];
+       int num,temp;
+       int i,k,j,z,l;
+       char production[10][SIZE];
+       int index=3;                 /* starting of the string following "->" */
+       clrscr();
+       printf("Enter Number of Production : ");
+       scanf("%d",&num);
+       printf("Enter the grammar as E->E-A :\n");
+       for(i=0;i<num;i++){
+	    scanf("%s",production[i]);
+       }
+       for(i=0;i<num;i++){
+	    printf("\nGRAMMAR : : : %s",production[i]);
+	    non_terminal=production[i][0];
+	    
+      if(non_terminal==production[i][index]) {
+	      index=index+1;
+	      for(k=0;production[i][index]!='|';k++){
+		 alpha[k]=production[i][index];
+		 index++;
+	      }
+printf(" is left recursive.\n");
+	while(production[i][index]!=0 && production[i][index]!='|')  {
+	   	index++;  }
+
+  	if(production[i][index]!=0) {
+		temp=0;
+   		index++;
+		for(z=index; production[i][index]!=0; z++){
+			 beta[temp]=production[i][index];
+		 	index++; 
+     			temp++;  }
+printf("Grammar without left recursion:\n");
+//printing A
+printf("%c->",non_terminal);//%c%c\'",non_terminal,beta,non_terminal);
+for(j=0;j<temp;j++){
+		printf("%c",beta[j]);
+		      }
+		      printf("%c\'",non_terminal);
+
+	//printing A'
+printf("\n%c\'->",non_terminal);//%s%c\'|^\n",non_terminal,alpha,non_terminal);
+for(j=0;j<k;j++){
+		printf("%c",alpha[j]);
+		      }
+printf("%c\'|^\n",non_terminal);
+       
+		}
+	else
+		printf(" can't be reduced\n");
+	   } 
+	   else 
+		 printf(" is not left recursive.\n");
+	    index=3;
+
+     for(l=0;l<10;l++){
+      beta[l]=0;
+      alpha[l]=0;     
+     }  
+    }   
+  getch();
+}
+
+
+9b
+
+%option noyywrap
+%{
+#include<stdio.h>
+int keyword = 0,datatype =
+0,symbol = 0,identifier = 0,number =
+0,t = 0;
+%}
+%%
+"if"|"else"|"for"|"do"|"while"|"break"|
+"printf"|"return"|"continue"|"case"|"d
+efault"|"int"|"scanf"
+{keyword++;t++;}
+"("|")"|";"|","|"{"|"}"|"%"|"<"|">"|"!"|
+"&"|":"|"+"|"-"|"\""|"="|"$"|"@"
+
+{symbol++;t++;}
+[A-Za-z]+
+
+{identifier++;t++;}
+
+[0-9]+
+
+{number++;t++;}
+"\n" printf("\nKeywords =
+%d \nSymbol = %d \nIdentifier =
+%d \nNumbers = %d \nTokens =
+%d",keyword,symbol,identifier,
+number,t);
+%%
+int main()
+{
+printf("Enter a string ");
+yylex();
+return 0;
+}

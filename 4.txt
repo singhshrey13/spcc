@@ -1,0 +1,72 @@
+4a
+%option noyywrap
+%{
+#include<stdio.h>
+int upc=0;
+int lwc=0;
+%}
+%%
+[A-Z] {printf("Uppercase
+\n");upc++;}
+[a-z] {printf("Lowercase \n");lwc++;}
+"\n" printf("Uppercase letters: %d
+\nLowercase letters: %d",lwc,upc);
+. ;
+%%
+int main()
+{
+printf("Enter String: ");
+yylex();
+return 0;
+}
+
+4b
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class ThreeAc_bosco {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("enter expression: ");
+        convert(sc.next());
+    }
+    
+    static List<String> op = new ArrayList<>(Arrays.asList("(","^","*","/","+","-"));
+    static int t=0;
+    
+    public static String convert(String s){
+        List<String> tok = new ArrayList<>(Arrays.asList(s.split("")));
+        for(String o : op){
+            for(int i=0;i<tok.size();i++){
+                if(tok.get(i).equals(o)){
+                    if(tok.get(i).equals("(")){
+                        String s1="";
+                        int j=i+1;
+                        while(!tok.get(j).equals(")")){
+                            s1+=tok.get(j);
+                            j++;
+                        }
+                        String m=convert(s1);
+                        tok.set(i,m);
+                        while(j>i){
+                            tok.remove(j);
+                            j--;
+                        }
+                    }
+                    else{
+                        int prev=i-1;
+                        System.out.println("t"+t+" = "+tok.get(i-1)+" "+tok.get(i)+" "+tok.get(i+1));
+                        tok.set(i-1, "t"+t);
+                        t++;
+                        tok.remove(i+1);
+                        tok.remove(i);
+                        i=prev;
+                    }
+                }
+            }
+        }
+        return "t"+(t-1);
+    }
+}

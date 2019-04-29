@@ -1,0 +1,86 @@
+8a
+if dogs hate cats then they chase. if cats like milk then they drink
+
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<ctype.h>
+int iskeyword(char a[]){
+	char verb[2][10] = {"hates","likes"};
+	char action[10] = "they";
+	char keywords[2][10] = {"if","then"};
+	int i=0,j;
+	for( j=0;j<2;j++){
+		if(strcmp(verb[j],a) == 0){
+			i = 1;
+			break;
+		}
+	}
+	if(strcmp(action,a) == 0){
+		i = 2;
+	}
+	for( j=0;j<2;j++){
+		if(strcmp(keywords[j],a) == 0){
+			i = 3;
+			break;
+		}
+	}
+	return i;
+}
+
+void main(){
+	char a[15],ch;
+	int i=0,k,j=0;
+	FILE *f;
+	clrscr();
+	f = fopen("text.txt","r");
+	if(f == NULL){
+		printf("Error occured");
+	}
+	while((ch = fgetc(f)) != EOF){
+		if(isalnum(ch)){
+			a[i++] = ch;
+		}
+		else if((ch == '.' || ch == ' ' || ch == '\n') && (i!=0)){
+			a[i] = '\0';
+			j++;
+			i = 0;
+			k = iskeyword(a);
+			if(k == 1){
+				printf("%s is verb\n",a);
+			}else if(k == 2){
+				printf("%s is action\n",a);
+			}else if(k == 3){
+				printf("%s is keyword\n",a);
+			}
+			else
+			{
+				printf("%s is noun\n",a);
+			}
+		}
+	}
+	printf("There are %d tokens",j);
+	getch();
+}
+
+8b
+%option noyywrap
+%{
+#include<stdio.h>
+int upc=0;
+int lwc=0;
+%}
+%%
+[A-Z] {printf("Uppercase
+\n");upc++;}
+[a-z] {printf("Lowercase \n");lwc++;}
+"\n" printf("Uppercase letters: %d
+\nLowercase letters: %d",lwc,upc);
+. ;
+%%
+int main()
+{
+printf("Enter String: ");
+yylex();
+return 0;
+}

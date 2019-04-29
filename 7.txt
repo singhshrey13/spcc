@@ -1,0 +1,63 @@
+7a
+%option noyywrap
+%{
+#include<stdio.h>
+int vowels=0,cons=0;
+%}
+%%
+[aeiouAEIOU] {vowels++;}
+[^aeiouAEIOU\n] {cons++;}
+\n printf("Vowels: %d
+\nConsonants: %d",vowels,cons);
+%%
+int main()
+{
+yylex();
+return 0;
+}
+
+7b
+Areas.h
+#define areat(a,b) 0.5*a*b
+#define pi 3.14
+#define arear(a,b) a*b
+#define areac(a) pi*a*a
+#define areas(a) a*a
+
+Compute.c
+#include<stdio.h>
+#include<conio.h>
+#include"areas.h"
+void main()
+{ float a,b,c=0;
+int n;
+clrscr();
+printf("******MENU*******\n");
+printf("1.Area of circle\n");
+printf("2.Area of triangle\n");
+printf("3.Area of rectangle\n");
+printf("4.Area of square\n");
+printf("Enter your choice\n");
+scanf("%d",&n);
+switch(n)
+{
+case 1:printf("Enter the radius\n");
+scanf("%f",&a);
+printf("Area of the circle is:%f",areac(a));
+break;
+case 2:printf("Enter the height and base of the triangle\n");
+scanf("%f %f",&a,&b);
+printf("Area of the triangle is:%f",areat(a,b));
+break;
+ case 3:printf("Enter the length and breadth of the rectangle\n");
+scanf("%f %f",&a,&b);
+printf("Area of the rectangle is:%f",arear(a,b));
+break;
+ case 4:printf("Enter the side of square\n");
+scanf("%f",&a);
+printf("Area of the square is:%f",areas(a));
+break;
+default:printf("Invalid Choice\n");
+}
+ getch();
+}

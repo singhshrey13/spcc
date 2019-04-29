@@ -1,0 +1,103 @@
+18a
+
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+void main()
+{
+   char newst[5][10], quad[5][10],exp2[10],exp1[10];
+   int n,i,j,l=0,k=0;
+   clrscr();
+   printf("Enter the no of statements : ");
+   scanf("%d" , &n);
+ printf("Enter the statements:");
+   for ( i=0;i<n;i++)
+   {
+      scanf("%s" , newst[i]);
+   }
+   for(j=0;j<n;j++)
+   {
+	 if(newst[j][1]== '='&& newst[j][3]=='\0')
+      {
+	 l=strlen(newst[j]);
+	 exp2[0]='\0';
+	 i=0;
+	 while(newst[j][k++]!='=')
+	    i++;
+	 strncat(exp2,newst[j],i);
+	 strrev(newst[j]);
+	 exp1[0]='\0';
+	 strncat(exp1,newst[j],l-(i+1));
+	 strrev(exp1);
+	 printf(" MOV R0 , %s \n MOV %s ,R0" ,exp1, exp2);
+      }
+      else
+      {
+	 if( newst[j][3]=='/')
+	    printf("\n MOV R0, %c \n DIV R0 , %c \n MOV %c , R0" , newst[j][2],newst[j][4], newst[j][1]);
+	 if( newst[j][3]=='*')
+	    printf("\n MOV R0 , %c \n MUL R0 , %c \n MOV %c , R0 " , newst[j][2],newst[j][4], newst[j][1]);
+	 if( newst[j][3]=='-')
+	    printf("\n MOV R0 , %c \n SUB R0 , %c \n MOV %c , R0" , newst[j][2],newst[j][4], newst[j][1]);
+	 if( newst[j][3]=='+')
+	    printf("\n MOV R0 , %c \n ADD R0 , %c \n MOV %c , R0" , newst[j][2],newst[j][4], newst[j][1]);}}
+ getch();
+}
+
+4
+a=b
+f=c+d
+e=a-f
+g=b*c
+
+18b
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class ThreeAc_bosco {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("enter expression: ");
+        convert(sc.next());
+    }
+    
+    static List<String> op = new ArrayList<>(Arrays.asList("(","^","*","/","+","-"));
+    static int t=0;
+    
+    public static String convert(String s){
+        List<String> tok = new ArrayList<>(Arrays.asList(s.split("")));
+        for(String o : op){
+            for(int i=0;i<tok.size();i++){
+                if(tok.get(i).equals(o)){
+                    if(tok.get(i).equals("(")){
+                        String s1="";
+                        int j=i+1;
+                        while(!tok.get(j).equals(")")){
+                            s1+=tok.get(j);
+                            j++;
+                        }
+                        String m=convert(s1);
+                        tok.set(i,m);
+                        while(j>i){
+                            tok.remove(j);
+                            j--;
+                        }
+                    }
+                    else{
+                        int prev=i-1;
+                        System.out.println("t"+t+" = "+tok.get(i-1)+" "+tok.get(i)+" "+tok.get(i+1));
+                        tok.set(i-1, "t"+t);
+                        t++;
+                        tok.remove(i+1);
+                        tok.remove(i);
+                        i=prev;
+                    }
+                }
+            }
+        }
+        return "t"+(t-1);
+    }
+}

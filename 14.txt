@@ -1,0 +1,108 @@
+14a
+
+package com.codegeneration;
+import java.util.Scanner;
+public class Cse
+{
+ Scanner sc=new Scanner(System.in);
+ String input[]=new String[20];
+ String temporary[]=new String[5];
+ int j,flag1=0,n,i;
+ public void input()
+ {
+ System.out.println("Enter the number of lines in the code");
+ n=sc.nextInt();
+ System.out.println("Enter the code");
+ for(i=0;i<=n;i++)
+ {
+ input[i]=sc.nextLine();
+ }
+ }
+ public void elimination()
+ {
+ System.out.println("New code after Common Sub Expression Elimination is :");
+ System.out.println("");
+ for(i=0;i<=1;i++)
+ {
+ String words[]=input[i].split("\\s");
+ for(j=0;j<words.length;j++)
+ {
+ int compare=words[j].compareTo("a");
+ if(compare==0 && j==2)
+ {
+ flag1=j;
+ System.out.print("temp =");
+ for(int t=flag1;t<words.length-1;t++)
+ {
+ System.out.print(words[t]);
+ }
+ System.out.print(";");
+ System.out.println("");
+ System.out.println(words[0]+"=temp ;");
+ System.out.println("Z"+ "=temp+" + "10;");
+ break;
+ }
+ }
+ }
+ }
+
+ public static void main(String[] args)
+ {
+ Cse ce=new Cse ();
+ ce.input();
+ ce.elimination();
+ }
+
+}
+
+14b
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class ThreeAc_bosco {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("enter expression: ");
+        convert(sc.next());
+    }
+    
+    static List<String> op = new ArrayList<>(Arrays.asList("(","^","*","/","+","-"));
+    static int t=0;
+    
+    public static String convert(String s){
+        List<String> tok = new ArrayList<>(Arrays.asList(s.split("")));
+        for(String o : op){
+            for(int i=0;i<tok.size();i++){
+                if(tok.get(i).equals(o)){
+                    if(tok.get(i).equals("(")){
+                        String s1="";
+                        int j=i+1;
+                        while(!tok.get(j).equals(")")){
+                            s1+=tok.get(j);
+                            j++;
+                        }
+                        String m=convert(s1);
+                        tok.set(i,m);
+                        while(j>i){
+                            tok.remove(j);
+                            j--;
+                        }
+                    }
+                    else{
+                        int prev=i-1;
+                        System.out.println("t"+t+" = "+tok.get(i-1)+" "+tok.get(i)+" "+tok.get(i+1));
+                        tok.set(i-1, "t"+t);
+                        t++;
+                        tok.remove(i+1);
+                        tok.remove(i);
+                        i=prev;
+                    }
+                }
+            }
+        }
+        return "t"+(t-1);
+    }
+}
